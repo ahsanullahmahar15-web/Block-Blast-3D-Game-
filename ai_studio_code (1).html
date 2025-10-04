@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SuthoPoints - Earn Rewards!</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23FF6F00' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15.5v-11l9 5.5-9 5.5z'/%3E%3C/svg%3E" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #FF6F00; /* Orange */
+            --secondary-color: #4CAF50; /* Green */
+            --accent-color: #3F51B5; /* Indigo */
+            --dark-grey: #2C3E50;
+            --light-grey: #ECF0F1;
+            --white: #FFFFFF;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            margin: 0;
+            background: linear-gradient(to right, var(--light-grey), var(--white));
+            color: var(--dark-grey);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header & Logo */
+        .header {
+            background-color: var(--dark-grey);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px var(--shadow);
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            color: var(--white);
+            text-decoration: none;
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.2em;
+            letter-spacing: 1px;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            color: var(--primary-color);
+        }
+
+        .logo-icon {
+            font-size: 1.2em;
+            margin-right: 10px;
+            color: var(--secondary-color);
+            transition: var(--transition);
+        }
+
+        .logo:hover .logo-icon {
+            transform: rotate(15deg);
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 4px var(--shadow);
+            text-decoration: none; /* For Profile/Login */
+        }
+
+        .nav-button:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px var(--shadow);
+        }
+
+        /* Dashboard */
+        .dashboard {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            box-shadow: 0 8px 16px var(--shadow);
+            text-align: center;
+            position: relative;
+        }
+
+        .points-display {
+            font-size: 3.5em;
+            font-family: 'Fredoka One', cursive;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .points-display span {
+            display: inline-block;
+            transition: transform 0.2s ease-out;
+        }
+
+        .points-display.animate span {
+            transform: scale(1.1);
+        }
+
+        .points-label {
+            font-size: 1.2em;
+            color: var(--dark-grey);
+            margin-bottom: 25px;
+        }
+
+        .points-animation {
+            position: absolute;
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--secondary-color);
+            opacity: 0;
+            transform: translateY(0);
+            transition: all 0.6s ease-out;
+            pointer-events: none;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .points-animation.active {
+            opacity: 1;
+            transform: translate(-50%, -100px);
+        }
+
+        /* Main Content Sections */
+        .section-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.5em;
+            color: var(--accent-color);
+            text-align: center;
+            margin: 40px 0 30px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Video Section */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .video-card {
+            background-color: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 4px 12px var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 16px var(--shadow);
+        }
+
+        .video-iframe-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+        }
+
+        .video-iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-info {
+            padding: 15px 20px;
+            text-align: center;
+        }
+
+        .video-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.3em;
+            color: var(--dark-grey);
+            margin-bottom: 10px;
+        }
+
+        .earn-points-button {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 80%;
+            margin: 0 auto 15px;
+        }
+
+        .earn-points-button:hover:not(:disabled) {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px var(--shadow);
+        }
+
+        .earn-points-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .video-progress-bar {
+            width: 100%;
+            background-color: var(--light-grey);
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .video-progress {
+            height: 100%;
+            width: 0%;
+            background-color: var(--accent-color);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 5px;
+            box-sizing: border-box;
+            font-size: 0.8em;
+            color: var(--white);
+            font-weight: bold;
+        }
+
+        /* Ads Section */
+        .ad-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .ad-card {
+            background-color: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 4px 12px var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+            text-align: center;
+            padding: 20px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .ad-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 16px var(--shadow);
+        }
+
+        .ad-card img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .ad-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.2em;
+            color: var(--dark-grey);
+            margin-bottom: 10px;
+        }
+
+        .ad-button {
+            background-color: var(--accent-color);
+            color: var(--white);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95em;
+            transition: var(--transition);
+        }
+
+        .ad-button:hover {
+            background-color: var(--primary-color);
+            transform: scale(1.05);
+        }
+
+        .ad-points-earned {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background-color: var(--secondary-color);
+            color: var(--white);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: bold;
+            box-shadow: 0 2px 4px var(--shadow);
+        }
+
+        /* Leaderboard */
+        .leaderboard-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+            background-color: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 8px 16px var(--shadow);
+            overflow: hidden;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            border-bottom: 1px solid var(--light-grey);
+            transition: var(--transition);
+        }
+
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+
+        .leaderboard-item:hover {
+            background-color: var(--light-grey);
+            transform: translateX(5px);
+        }
+
+        .leaderboard-item .rank {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.8em;
+            color: var(--primary-color);
+            width: 40px;
+            text-align: left;
+        }
+
+        .leaderboard-item .name {
+            flex-grow: 1;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--dark-grey);
+            text-align: left;
+            margin-left: 15px;
+        }
+
+        .leaderboard-item .points {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.4em;
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Modals */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0, 0, 0, 0.6); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            margin: auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px var(--shadow);
+            width: 90%;
+            max-width: 500px;
+            animation: slideIn 0.3s ease-out;
+            position: relative;
+            text-align: center;
+        }
+
+        .close-button {
+            color: var(--dark-grey);
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: var(--primary-color);
+            transform: rotate(90deg);
+        }
+
+        .modal-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2em;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .redeem-option {
+            background-color: var(--light-grey);
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--dark-grey);
+            transition: var(--transition);
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .redeem-option:hover {
+            background-color: var(--light-grey);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .redeem-option.selected {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.4);
+        }
+
+        .redeem-button {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: var(--transition);
+            width: 100%;
+            box-shadow: 0 4px 8px var(--shadow);
+        }
+
+        .redeem-button:hover:not(:disabled) {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px var(--shadow);
+        }
+
+        .redeem-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .redeem-confirmation {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 8px;
+            font-weight: bold;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Profile/Login Modal (Placeholder) */
+        #profileModal .modal-content {
+            text-align: center;
+        }
+        #profileModal .modal-content h2 {
+            margin-bottom: 20px;
+        }
+        #profileModal .modal-content p {
+            font-size: 1.1em;
+            color: var(--dark-grey);
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .nav-buttons {
+                width: 100%;
+                justify-content: space-around;
+            }
+            .nav-button {
+                flex-grow: 1;
+                font-size: 0.9em;
+                padding: 10px 15px;
+            }
+            .logo {
+                font-size: 1.8em;
+            }
+            .dashboard {
+                padding: 20px;
+            }
+            .points-display {
+                font-size: 3em;
+            }
+            .section-title {
+                font-size: 2em;
+            }
+            .video-grid, .ad-grid {
+                grid-template-columns: 1fr;
+            }
+            .leaderboard-item {
+                padding: 12px 20px;
+                font-size: 0.9em;
+            }
+            .leaderboard-item .rank {
+                font-size: 1.5em;
+            }
+            .leaderboard-item .points {
+                font-size: 1.2em;
+            }
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.6em;
+            }
+            .nav-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-button {
+                width: 100%;
+            }
+            .points-display {
+                font-size: 2.5em;
+            }
+            .section-title {
+                font-size: 1.8em;
+                margin-top: 30px;
+            }
+            .video-title, .ad-title {
+                font-size: 1.1em;
+            }
+            .earn-points-button, .ad-button {
+                font-size: 1em;
+                padding: 8px 15px;
+            }
+            .modal-title {
+                font-size: 1.8em;
+            }
+            .redeem-option {
+                font-size: 1em;
+            }
+            .redeem-button {
+                font-size: 1.1em;
+                padding: 10px 20px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes popOut {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .pop-out {
+            animation: popOut 0.3s ease-out;
+        }
+
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="#" class="logo">
+            <span class="logo-icon">🎬</span> SuthoPoints
+        </a>
+        <div class="nav-buttons">
+            <button class="nav-button" onclick="scrollToSection('dashboard')">
+                <span role="img" aria-label="home">🏠</span> Dashboard
+            </button>
+            <button class="nav-button" onclick="scrollToSection('videos')">
+                <span role="img" aria-label="play button">▶️</span> Watch Videos
+            </button>
+            <button class="nav-button" onclick="scrollToSection('ads')">
+                <span role="img" aria-label="ad">📺</span> Watch Ads
+            </button>
+            <button class="nav-button" onclick="openModal('redeemModal')">
+                <span role="img" aria-label="gift">🎁</span> Redeem Points
+            </button>
+            <button class="nav-button" onclick="scrollToSection('leaderboard')">
+                <span role="img" aria-label="trophy">🏆</span> Leaderboard
+            </button>
+            <a href="#" class="nav-button" onclick="openModal('profileModal')">
+                <span role="img" aria-label="profile">👤</span> Profile/Login
+            </a>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="dashboard" class="dashboard">
+            <h1 class="points-label">Your Current Points:</h1>
+            <div class="points-display" id="totalPoints">
+                <span>0</span>
+            </div>
+            <div class="points-animation" id="pointsAnimation"></div>
+            <p class="points-label">Keep earning to unlock amazing rewards! ✨</p>
+        </section>
+
+        <section id="videos">
+            <h2 class="section-title">Watch Videos & Earn Points! 🚀</h2>
+            <div class="video-grid" id="videoGrid">
+                <!-- Video cards will be dynamically inserted here -->
+            </div>
+        </section>
+
+        <section id="ads">
+            <h2 class="section-title">Watch Ads, Get More Points! 💰</h2>
+            <div class="ad-grid" id="adGrid">
+                <!-- Ad cards will be dynamically inserted here -->
+            </div>
+        </section>
+
+        <section id="leaderboard">
+            <h2 class="section-title">Top SuthoPoints Earners! 🏅</h2>
+            <ul class="leaderboard-list" id="leaderboardList">
+                <!-- Leaderboard items will be dynamically inserted here -->
+            </ul>
+        </section>
+    </main>
+
+    <!-- Redeem Points Modal -->
+    <div id="redeemModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('redeemModal')">&times;</span>
+            <h2 class="modal-title">Redeem Your SuthoPoints! 🎁</h2>
+            <p>You have <span id="currentRedeemPoints">0</span> points.</p>
+            <p>1000 points = $1 USD / 1 USDT / 0.001 BTC</p>
+
+            <div class="redeem-option" data-type="Visa">
+                <span>💳 Redeem $X USD (Visa)</span>
+                <span class="redeem-points-needed"></span>
+            </div>
+            <div class="redeem-option" data-type="USDT">
+                <span>💰 Redeem X USDT</span>
+                <span class="redeem-points-needed"></span>
+            </div>
+            <div class="redeem-option" data-type="BTC">
+                <span>₿ Redeem X BTC</span>
+                <span class="redeem-points-needed"></span>
+            </div>
+
+            <button id="redeemNowButton" class="redeem-button" disabled>Redeem Now!</button>
+            <div id="redeemConfirmation" class="redeem-confirmation"></div>
+        </div>
+    </div>
+
+    <!-- Profile/Login Modal (Placeholder) -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('profileModal')">&times;</span>
+            <h2 class="modal-title">Your Profile & Login 👤</h2>
+            <p>This is a placeholder for your user profile and login features.</p>
+            <p>In a real app, you'd find settings, history, and authentication here!</p>
+            <p>Stay tuned for more features! 😉</p>
+        </div>
+    </div>
+
+    <script>
+        // --- Global Variables & Initial Setup ---
+        let userPoints = parseInt(localStorage.getItem('suthoPoints')) || 0;
+        const REDEMPTION_RATE = 1000; // 1000 points = $1 / 1 USDT / 0.001 BTC
+
+        // Example data for videos
+        const videos = [
+            { id: 'LXb3EKWsInQ', title: 'Relaxing Music for Study, Sleep, Focus', points: 8, duration: 15 },
+            { id: 'B-xM0q_N7A0', title: 'Beautiful Nature Scenery', points: 7, duration: 20 },
+            { id: 't_yvL_B3T5M', title: 'Top 10 Ancient Wonders', points: 9, duration: 10 },
+            { id: 'jfKfPfyJRdk', title: 'Deep Sea Exploration', points: 10, duration: 12 },
+            { id: 'ysz5S6PUM-U', title: 'Cooking Challenge Fun', points: 6, duration: 18 }
+        ];
+
+        // Example data for ads
+        const ads = [
+            { id: 'ad1', title: 'Amazing New Product', points: 3, image: 'https://via.placeholder.com/280x180/FF6F00/FFFFFF?text=Ad+1' },
+            { id: 'ad2', title: 'Travel Destination Deal', points: 4, image: 'https://via.placeholder.com/280x180/4CAF50/FFFFFF?text=Ad+2' },
+            { id: 'ad3', title: 'Learn to Code Now!', points: 2, image: 'https://via.placeholder.com/280x180/3F51B5/FFFFFF?text=Ad+3' },
+        ];
+
+        // Example data for leaderboard
+        let leaderboardData = [
+            { name: 'SuthoUser1', points: 15000 },
+            { name: 'SuthoPro', points: 12500 },
+            { name: 'PointHunter', points: 10000 },
+            { name: 'RewardMaster', points: 9000 },
+            { name: 'ViewerKing', points: 7500 },
+            { name: 'AdSensei', points: 6000 },
+            { name: 'CashCow', points: 4500 },
+            { name: 'EarnAlot', points: 3000 },
+            { name: 'PointyMcPointFace', points: 1500 },
+        ].sort((a, b) => b.points - a.points); // Sort initially
+
+        // Keep track of watched videos/ads for progress and disabling
+        let watchedVideos = JSON.parse(localStorage.getItem('watchedVideos')) || {};
+        let watchedAds = JSON.parse(localStorage.getItem('watchedAds')) || {};
+
+
+        // --- DOM Elements ---
+        const totalPointsDisplay = document.getElementById('totalPoints');
+        const pointsAnimation = document.getElementById('pointsAnimation');
+        const videoGrid = document.getElementById('videoGrid');
+        const adGrid = document.getElementById('adGrid');
+        const leaderboardList = document.getElementById('leaderboardList');
+        const redeemModal = document.getElementById('redeemModal');
+        const profileModal = document.getElementById('profileModal');
+        const currentRedeemPointsSpan = document.getElementById('currentRedeemPoints');
+        const redeemOptions = document.querySelectorAll('.redeem-option');
+        const redeemNowButton = document.getElementById('redeemNowButton');
+        const redeemConfirmation = document.getElementById('redeemConfirmation');
+
+        // --- Functions ---
+
+        /**
+         * Updates the total points displayed on the dashboard.
+         * Animates the points change with a slight scale and a pop-up.
+         * @param {number} pointsToAdd - The number of points to add (can be negative for redemption).
+         */
+        function updatePoints(pointsToAdd = 0) {
+            const oldPoints = userPoints;
+            userPoints += pointsToAdd;
+            localStorage.setItem('suthoPoints', userPoints);
+
+            totalPointsDisplay.textContent = userPoints.toLocaleString();
+
+            // Animate point change
+            if (pointsToAdd !== 0) {
+                pointsAnimation.textContent = (pointsToAdd > 0 ? '+' : '') + pointsToAdd;
+                pointsAnimation.classList.add('active');
+                totalPointsDisplay.classList.add('pop-out');
+
+                setTimeout(() => {
+                    pointsAnimation.classList.remove('active');
+                    totalPointsDisplay.classList.remove('pop-out');
+                }, 600); // Duration of the animation
+            }
+
+            // Update leaderboard if points changed significantly or on initial load
+            if (pointsToAdd !== 0) {
+                updateLeaderboard(userPoints);
+            }
+        }
+
+        /**
+         * Generates and inserts video cards into the video grid.
+         */
+        function renderVideos() {
+            videoGrid.innerHTML = ''; // Clear existing videos
+            videos.forEach(video => {
+                const videoCard = document.createElement('div');
+                videoCard.className = 'video-card';
+                const hasWatched = watchedVideos[video.id] && watchedVideos[video.id].earned;
+                const progress = watchedVideos[video.id] ? watchedVideos[video.id].progress : 0;
+                const pointsText = hasWatched ? 'Earned!' : `Earn ${video.points} Pts`;
+
+                videoCard.innerHTML = `
+                    <div class="video-iframe-container">
+                        <iframe src="https://www.youtube.com/embed/${video.id}?autoplay=0&controls=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">${video.title}</h3>
+                        <button class="earn-points-button" data-video-id="${video.id}" ${hasWatched ? 'disabled' : ''}>
+                            ${hasWatched ? '🎉 Earned!' : `Watch & Earn! <span role="img" aria-label="coin">🪙</span> ${video.points}`}
+                        </button>
+                        <div class="video-progress-bar">
+                            <div class="video-progress" style="width: ${progress}%">${progress > 0 && !hasWatched ? `${progress}%` : ''}</div>
+                        </div>
+                    </div>
+                `;
+                videoGrid.appendChild(videoCard);
+            });
+            addVideoEventListeners();
+        }
+
+        /**
+         * Adds event listeners to video "Watch & Earn" buttons.
+         */
+        function addVideoEventListeners() {
+            document.querySelectorAll('.earn-points-button').forEach(button => {
+                button.onclick = (event) => {
+                    if (event.target.disabled) return;
+
+                    const videoId = event.target.dataset.videoId;
+                    const video = videos.find(v => v.id === videoId);
+                    if (!video) return;
+
+                    button.disabled = true;
+                    button.textContent = 'Watching... ⏳';
+
+                    let currentProgress = watchedVideos[videoId] ? watchedVideos[videoId].progress : 0;
+                    const progressBar = button.closest('.video-info').querySelector('.video
